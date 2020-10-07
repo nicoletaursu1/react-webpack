@@ -7,11 +7,13 @@ module.exports = {
   entry: path.resolve(__dirname, "src", "app.tsx"),
   output: {
     filename: "[name].bundle.js",
-    path: path.resolve(__dirname, "dist")
+    path: path.resolve(__dirname, "dist"),
+    publicPath: '/'
   },
   devServer: {
     contentBase: path.resolve(__dirname, "dist"),
     compress: true,
+    historyApiFallback: true,
     port: 9000,
   },
   devtool: "source-map",

@@ -1,17 +1,24 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import '../public/sass/styles.scss'
+import React from "react";
+import ReactDOM from "react-dom";
+import { Switch, Route, Link, BrowserRouter as Router } from "react-router-dom";
 
-import Logo from './components/Logo';
+import "../public/sass/styles.scss";
+import SignupPage from "./pages/SignupPage";
+import SigninPage from './pages/SigninPage';
 
 const App = () => {
   return (
-    <div className='container'>
-      <Logo />
-      <p className='logo__description'>Chinese B Pay</p>
-      <p className='temp'>*Some cool content and functionality here*</p>
-    </div>
-  )
-}
+    <Router>
+      <Switch>
+        <Route path="/" exact>
+          <h1 style={{fontSize: '40px'}}>Hello</h1>
+          <Link to='/signup' style={{fontSize: '20px'}}><h5>Sign up</h5></Link>
+        </Route>
+        <Route path="/signup" component={SignupPage} exact />
+        <Route path="/signin" component={SigninPage} exact />
+      </Switch>
+    </Router>
+  );
+};
 
-ReactDOM.render(<App/>,document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));
