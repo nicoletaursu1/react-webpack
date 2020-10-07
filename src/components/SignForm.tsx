@@ -14,7 +14,7 @@ const SignForm: React.FC<FormProps> = (props) => {
     confirmPassword: "",
   });
 
-  const onChange = (e: any) => {
+  const onChange = e => {
     setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
     console.log(userInfo);
   };
@@ -23,7 +23,7 @@ const SignForm: React.FC<FormProps> = (props) => {
     setUserInfo({ email: "", password: "", confirmPassword: "" });
   };
 
-  const onSubmit = (e: any) => {
+  const onSubmit = e => {
     e.preventDefault();
     resetForm();
     console.log("Submitted");
@@ -36,24 +36,24 @@ const SignForm: React.FC<FormProps> = (props) => {
 
         <TextInput
           onChange={onChange}
-          name="Email"
+          name="email"
           type="text"
           value={userInfo.email}
           placeholder="Enter your email"
         />
         <TextInput
           onChange={onChange}
-          name="Email"
+          name="password"
           type="text"
-          value={userInfo.email}
+          value={userInfo.password}
           placeholder="Enter password"
         />
         {!props.signedUp && (
           <TextInput
             onChange={onChange}
-            name="Email"
+            name="confirmPassword"
             type="text"
-            value={userInfo.email}
+            value={userInfo.confirmPassword}
             placeholder="Confirm password"
           />
         )}
