@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import colors from "../constants/colors";
+import colors from "../../constants/colors";
+import SignButton from "./SignButton";
+import SignInput from "./SignInput";
 
 interface FormProps {
   signedUp: boolean;
@@ -14,7 +16,7 @@ const SignForm: React.FC<FormProps> = (props) => {
     confirmPassword: "",
   });
 
-  const onChange = e => {
+  const onChange = (e: any) => {
     setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
     console.log(userInfo);
   };
@@ -23,7 +25,7 @@ const SignForm: React.FC<FormProps> = (props) => {
     setUserInfo({ email: "", password: "", confirmPassword: "" });
   };
 
-  const onSubmit = e => {
+  const onSubmit = (e: any) => {
     e.preventDefault();
     resetForm();
     console.log("Submitted");
@@ -32,16 +34,16 @@ const SignForm: React.FC<FormProps> = (props) => {
   return (
     <Wrapper>
       <Form onSubmit={onSubmit}>
-        {(props.signedUp) ? <Header>SIGN IN</Header> : <Header>SIGN UP</Header>}
+        {props.signedUp ? <Header>SIGN IN</Header> : <Header>SIGN UP</Header>}
 
-        <TextInput
+        <SignInput
           onChange={onChange}
           name="email"
           type="text"
           value={userInfo.email}
           placeholder="Enter your email"
         />
-        <TextInput
+        <SignInput
           onChange={onChange}
           name="password"
           type="text"
@@ -49,7 +51,7 @@ const SignForm: React.FC<FormProps> = (props) => {
           placeholder="Enter password"
         />
         {!props.signedUp && (
-          <TextInput
+          <SignInput
             onChange={onChange}
             name="confirmPassword"
             type="text"
@@ -58,7 +60,7 @@ const SignForm: React.FC<FormProps> = (props) => {
           />
         )}
 
-        <Button type="submit">SUBMIT</Button>
+        <SignButton title="SUBMIT" />
       </Form>
     </Wrapper>
   );
@@ -86,22 +88,5 @@ const Form = styled.form`
   align-items: center;
   justify-content: center;
 `;
-const TextInput = styled.input`
-  outline: none;
-  border: 1px solid gray;
-  border-radius: 20px;
-  margin: 5px 0;
-  padding: 12px 20px;
-  width: 280px;
-`;
-const Button = styled.button`
-  align-self: flex-start;
-  border: none;
-  background-color: ${colors.green};
-  color: white;
-  font: 14px "Open-sans", sans-serif;
-  padding: 10px 25px;
-  border-radius: 20px;
-  margin: 15px 0;
-`;
+
 export default SignForm;
