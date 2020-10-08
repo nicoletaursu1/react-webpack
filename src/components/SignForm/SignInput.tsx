@@ -3,11 +3,11 @@ import styled from "styled-components";
 import colors from "../../constants/colors";
 
 interface InputProps {
-  name: string;
-  type: string;
-  value: string;
-  placeholder: string;
-  onChange: (e: any) => void;
+  name: string,
+  type: string,
+  value: string,
+  placeholder: string,
+  onChange: (e: any) => void
 }
 
 const SignInput: React.FC<InputProps> = (props) => {

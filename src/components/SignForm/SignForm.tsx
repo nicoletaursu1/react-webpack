@@ -4,6 +4,7 @@ import styled from "styled-components";
 import colors from "../../constants/colors";
 import SignButton from "./SignButton";
 import SignInput from "./SignInput";
+import Alert from "../Alert";
 
 interface FormProps {
   signedUp: boolean;
@@ -15,10 +16,16 @@ const SignForm: React.FC<FormProps> = (props) => {
     password: "",
     confirmPassword: "",
   });
+  const [alert, showAlert] = useState(false);
 
   const onChange = (e: any) => {
     setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
     console.log(userInfo);
+  };
+
+  const onButtonClick = () => {
+    showAlert(true);
+    setTimeout(() => showAlert(false), 3000);
   };
 
   const resetForm = () => {
@@ -46,7 +53,7 @@ const SignForm: React.FC<FormProps> = (props) => {
         <SignInput
           onChange={onChange}
           name="password"
-          type="text"
+          type="password"
           value={userInfo.password}
           placeholder="Enter password"
         />
@@ -54,13 +61,25 @@ const SignForm: React.FC<FormProps> = (props) => {
           <SignInput
             onChange={onChange}
             name="confirmPassword"
-            type="text"
+            type="password"
             value={userInfo.confirmPassword}
             placeholder="Confirm password"
           />
         )}
+        {alert && (
+          <Alert msgType="fail" message="Please provide matching passwords"/>
+        )}
 
-        <SignButton title="SUBMIT" />
+        {userInfo.password === userInfo.confirmPassword && !(userInfo.confirmPassword === "") ? (
+          <SignButton title="SUBMIT" />
+        ) : (
+          <div
+            style={{ alignSelf: "flex-start"}}
+            onClick={onButtonClick}
+          >
+            <SignButton title="SUBMIT" disabled/>
+          </div>
+        )}
       </Form>
     </Wrapper>
   );

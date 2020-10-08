@@ -1,18 +1,30 @@
-import camelCase from 'lodash/camelCase'
-import { combineReducers } from 'redux'
-import { reducer as form } from 'redux-form'
-import { reducer as thunk } from 'redux-saga-thunk'
+import { combineReducers } from "redux";
+import { AUTH_REQUEST, AUTH_FAILURE, AUTH_SUCCESS } from "./actions";
+import { authorize } from "./actions";
 
-const reducers = {
-  form,
-  thunk,
-}
+const initialState = {
+  token: localStorage.getItem("token"),
+  error: null,
+};
 
-const req = require.context('.', true, /\.\/.+\/reducer\.js$/)
+const authReducer = (state = initialState, { type, payload }) => {
+  switch (type) {
+    case AUTH_SUCCESS: {
+      return { ...state, token: payload };
+    }
 
-req.keys().forEach((key) => {
-  const storeName = camelCase(key.replace(/\.\/(.+)\/.+$/, '$1'))
-  reducers[storeName] = req(key).default
-})
+    case AUTH_FAILURE: {
+      return {
+        ...state,
+        error: payload,
+      };
+    }
 
-export default combineReducers(reducers)
+    default:
+      return state;
+  }
+};
+
+const reducer = combineReducers({ auth: authReducer });
+
+export default reducer;
