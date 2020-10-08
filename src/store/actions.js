@@ -1,9 +1,8 @@
-const req = require.context('.', true, /\.\/.+\/actions\.js$/)
+export const AUTH_REQUEST = 'AUTH_REQUEST';
+export const AUTH_SUCCESS = 'AUTH_SUCCES';
+export const AUTH_FAILURE = 'AUTH_FAILURE';
 
-req.keys().forEach((key) => {
-  const actions = req(key)
-
-  Object.keys(actions).forEach((name) => {
-    module.exports[name] = actions[name]
-  })
-})
+export const authorize = (email, password) => ({
+  type: AUTH_REQUEST,
+  payload: { email, password }
+});
