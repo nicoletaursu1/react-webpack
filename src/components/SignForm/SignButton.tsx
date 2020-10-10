@@ -7,10 +7,10 @@ interface ButtonProps {
   title: string,
   disabled?: boolean,
   onClick?: () => void
-}
+};
 
 const SignButton: React.FC<ButtonProps> = (props) => {
-  return <Button type="submit" disabled={props.disabled}>{props.title}</Button>;
+  return <Button type="submit" disabled={props.disabled} onClick={props.onClick}>{props.title}</Button>;
 };
 
 const Button = styled.button`
@@ -24,5 +24,6 @@ const Button = styled.button`
   margin: 15px 0;
   ${props => props.disabled && `background-color: gray;`}
 `;
+
 
 export default SignButton;

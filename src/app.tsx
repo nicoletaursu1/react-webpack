@@ -14,9 +14,7 @@ import saga from "./store/sagas";
 import reducer from "./store/reducer";
 
 const sagaMiddleware = createSagaMiddleware();
-
 const middleware = applyMiddleware(sagaMiddleware);
-
 const store = createStore(reducer, middleware);
 
 sagaMiddleware.run(saga);
