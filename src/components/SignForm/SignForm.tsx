@@ -1,39 +1,56 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
+import { connect } from "react-redux";
 
+import { IUserData } from "../../types";
 import colors from "../../constants/colors";
 import SignButton from "./SignButton";
 import SignInput from "./SignInput";
 import Alert from "../Alert";
+import { signUp } from "../../store/actions";
+import { getMessageState } from "../../store/selectors";
 
 interface FormProps {
   signedUp: boolean;
+  message?: string;
 }
 
 const SignForm: React.FC<FormProps> = (props) => {
-  const [userInfo, setUserInfo] = useState({
+  const dispatch = useDispatch();
+
+  const [userInfo, setUserInfo] = useState<IUserData>({
     email: "",
     password: "",
     confirmPassword: "",
   });
-  const [alert, showAlert] = useState(false);
+  const [alert, showAlert] = useState<boolean>(false);
 
-  const onChange = (e: any) => {
+  let authMessage = props.message;
+  console.log("prop:", authMessage);
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
-    console.log(userInfo);
   };
 
-  const onButtonClick = () => {
+  const onButtonClick = (type: string): void => {
     showAlert(true);
-    setTimeout(() => showAlert(false), 3000);
+    if (type === "enabled") {
+      setTimeout(() => {
+        showAlert(false);
+      }, 3000);
+    } else {
+      setTimeout(() => showAlert(false), 3000);
+    }
   };
 
-  const resetForm = () => {
+  const resetForm = (): void => {
     setUserInfo({ email: "", password: "", confirmPassword: "" });
   };
 
-  const onSubmit = (e: any) => {
+  const onSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
+    dispatch(signUp(userInfo.email, userInfo.password));
     resetForm();
     console.log("Submitted");
   };
@@ -66,18 +83,24 @@ const SignForm: React.FC<FormProps> = (props) => {
             placeholder="Confirm password"
           />
         )}
-        {alert && (
-          <Alert msgType="fail" message="Please provide matching passwords"/>
-        )}
+        {alert &&
+          (authMessage === "" ? (
+            <Alert msgType="fail" message="Please provide matching passwords" />
+          ) : authMessage.includes("wrong") ? (
+            <Alert msgType="fail" message={authMessage} />
+          ) : (
+            <Alert msgType="success" message={authMessage} />
+          ))}
 
-        {userInfo.password === userInfo.confirmPassword && !(userInfo.confirmPassword === "") ? (
-          <SignButton title="SUBMIT" />
+        {userInfo.password === userInfo.confirmPassword &&
+        !(userInfo.confirmPassword === "") ? (
+          <SignButton title="SUBMIT" onClick={() => onButtonClick("enabled")} />
         ) : (
           <div
-            style={{ alignSelf: "flex-start"}}
-            onClick={onButtonClick}
+            style={{ alignSelf: "flex-start" }}
+            onClick={() => onButtonClick("disabled")}
           >
-            <SignButton title="SUBMIT" disabled/>
+            <SignButton title="SUBMIT" disabled />
           </div>
         )}
       </Form>
@@ -108,4 +131,10 @@ const Form = styled.form`
   justify-content: center;
 `;
 
-export default SignForm;
+const mapStateToProps = (state) => {
+  return {
+    message: getMessageState(state),
+  };
+};
+
+export default connect(mapStateToProps)(SignForm);
