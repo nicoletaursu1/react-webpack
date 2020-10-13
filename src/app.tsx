@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Switch, Route, Link, BrowserRouter as Router } from "react-router-dom";
+import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 import createSagaMiddleware from "redux-saga";
 import { Provider } from "react-redux";
 import { applyMiddleware, createStore } from "redux";
@@ -26,7 +26,7 @@ const App = () => {
         <Switch>
           <Route path="/" component={HomePage} exact />
           <Route path="/signup" component={SignupPage} exact />
-          <Route path="/signin" component={SigninPage} exact />
+          <Route path="/login" component={SigninPage} exact />
         </Switch>
       </Router>
     </Provider>

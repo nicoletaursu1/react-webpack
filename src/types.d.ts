@@ -1,8 +1,9 @@
 export enum Actions {
   SIGNUP = "SIGNUP",
-  SIGNIN = "SIGNIN",
+  LOGIN = "LOGIN",
   AUTH_SUCCESS = "AUTH_SUCCES",
   AUTH_FAILURE = "AUTH_FAILURE",
+  AUTH_FINISHED = "AUTH_FINISHED"
 }
 
 export interface IAuth {
@@ -18,6 +19,7 @@ export interface IUserData {
 }
 
 export interface IUserState {
+  authorized: boolean,
   requesting: boolean,
   successful: boolean,
   message: string
