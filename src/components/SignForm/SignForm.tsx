@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { connect } from "react-redux";
@@ -8,16 +8,20 @@ import colors from "../../constants/colors";
 import SignButton from "./SignButton";
 import SignInput from "./SignInput";
 import Alert from "../Alert";
-import { signUp } from "../../store/actions";
-import { getMessageState } from "../../store/selectors";
+import { signUp, login} from "../../store/actions";
+import { getMessageState, getSuccessfulState } from "../../store/selectors";
+import { RouteChildrenProps, Redirect } from "react-router-dom";
 
 interface FormProps {
-  signedUp: boolean;
-  message?: string;
+  signedUp: boolean,
+  message?: string,
+  successful?: boolean,
 }
 
 const SignForm: React.FC<FormProps> = (props) => {
   const dispatch = useDispatch();
+  let authMessage = props.message;
+  let authSuccessful = props.successful;
 
   const [userInfo, setUserInfo] = useState<IUserData>({
     email: "",
@@ -26,21 +30,13 @@ const SignForm: React.FC<FormProps> = (props) => {
   });
   const [alert, showAlert] = useState<boolean>(false);
 
-  let authMessage = props.message;
-  console.log("prop:", authMessage);
-
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
   };
 
-  const onButtonClick = (type: string): void => {
-    showAlert(true);
-    if (type === "enabled") {
-      setTimeout(() => {
-        showAlert(false);
-      }, 3000);
-    } else {
-      setTimeout(() => showAlert(false), 3000);
+  const onButtonClick = (type?: string): void => {
+    if(!authSuccessful) {
+      showAlert(true);
     }
   };
 
@@ -48,15 +44,27 @@ const SignForm: React.FC<FormProps> = (props) => {
     setUserInfo({ email: "", password: "", confirmPassword: "" });
   };
 
-  const onSubmit = (e: React.FormEvent): void => {
+  const onSubmit = (e?: React.FormEvent): void => {
     e.preventDefault();
-    dispatch(signUp(userInfo.email, userInfo.password));
+    if (!props.signedUp) {
+      dispatch(signUp(userInfo.email, userInfo.password));
+    } else {
+      dispatch(login(userInfo.email, userInfo.password));
+    }
+    
     resetForm();
-    console.log("Submitted");
   };
 
   return (
     <Wrapper>
+
+      {(authSuccessful && !props.signedUp) ? (
+        <Redirect to="/login" />
+      ) : ((authSuccessful && props.signedUp) && (
+        <Redirect to="/" />
+      ))
+      
+      }
       <Form onSubmit={onSubmit}>
         {props.signedUp ? <Header>SIGN IN</Header> : <Header>SIGN UP</Header>}
 
@@ -92,8 +100,7 @@ const SignForm: React.FC<FormProps> = (props) => {
             <Alert msgType="success" message={authMessage} />
           ))}
 
-        {userInfo.password === userInfo.confirmPassword &&
-        !(userInfo.confirmPassword === "") ? (
+        {(((userInfo.password === userInfo.confirmPassword) && !(userInfo.confirmPassword === "")) || (props.signedUp)) ? (
           <SignButton title="SUBMIT" onClick={() => onButtonClick("enabled")} />
         ) : (
           <div
@@ -106,6 +113,13 @@ const SignForm: React.FC<FormProps> = (props) => {
       </Form>
     </Wrapper>
   );
+};
+
+const mapStateToProps = (state: Object) => {
+  return {
+    message: getMessageState(state),
+    successful: getSuccessfulState(state)
+  };
 };
 
 const Wrapper = styled.div`
@@ -130,11 +144,5 @@ const Form = styled.form`
   align-items: center;
   justify-content: center;
 `;
-
-const mapStateToProps = (state) => {
-  return {
-    message: getMessageState(state),
-  };
-};
 
 export default connect(mapStateToProps)(SignForm);
