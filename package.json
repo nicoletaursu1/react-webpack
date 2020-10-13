@@ -60,6 +60,7 @@
     "redux-saga-thunk": "^0.7.3",
     "reselect": "^4.0.0",
     "sass": "^1.26.11",
-    "styled-components": "^5.2.0"
+    "styled-components": "^5.2.0",
+    "typesafe-actions": "^5.1.0"
   }
 }

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
-import SignForm from '../components/SignForm/SignForm';
+import Form from '../components/SignForm/Form';
 
 const SignupPage = () => {
   return (
     <div>
-      <SignForm signedUp={false} />
+      <Form signedUp={false} />
     </div>
   )
 }

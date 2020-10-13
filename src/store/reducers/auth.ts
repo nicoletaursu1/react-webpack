@@ -1,5 +1,4 @@
-import { combineReducers } from "redux";
-import { Actions, IUserState, IAction } from "../types.d";
+import { Actions, IUserState, IAction } from "../../types.d";
 
 const initialState: IUserState = {
   authorized: false,
@@ -41,19 +40,9 @@ const authReducer = (state = initialState, { type, message }: IAction) => {
       };
     }
 
-    case Actions.AUTH_FINISHED: {
-      return {
-        ...state,
-        requesting: false,
-        successful: false
-      }
-    }
-
     default:
       return state;
   }
 };
-
-// const reducer = combineReducers({ authReducer: authReducer });
 
 export default authReducer;

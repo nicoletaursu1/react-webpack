@@ -1,4 +1,4 @@
-import { Actions, IAuth } from "../types.d";
+import { Actions, IAuth } from "../../types.d";
 
 export const signUp = (email: string, password: string): IAuth => {
   return {
@@ -13,11 +13,5 @@ export const login = (email: string, password: string): IAuth => {
     type: Actions.LOGIN,
     email: email,
     password: password
-  }
-}
-
-export const authFinished = () => {
-  return {
-    type: Actions.AUTH_FINISHED
   }
 }

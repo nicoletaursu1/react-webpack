@@ -1,6 +1,6 @@
-import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
+import { call, put, takeLatest } from "redux-saga/effects";
 import axios from "axios";
-import { Actions, IAuth } from "../types.d";
+import { Actions, IAuth } from "../../types.d";
 
 axios.defaults.baseURL = "http://localhost:3003/";
 
@@ -84,10 +84,4 @@ function* login(action: IAuth) {
     yield put({ type: Actions.AUTH_FAILURE, message });
   }
 }
-
-function* Saga() {
-  yield takeLatest("SIGNUP", signUp);
-  yield takeLatest("LOGIN", login);
-}
-
-export default Saga;
+export { signUp, login}
