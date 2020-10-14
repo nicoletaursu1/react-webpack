@@ -20,6 +20,7 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   (response) => {
     if (response?.data?.accessToken) sessionStorage.setItem('token', response.data.accessToken);
+    else if (response?.data?.token?.accessToken) sessionStorage.setItem('token', response.data.token.accessToken);
     return response;
   },
   (error) => {

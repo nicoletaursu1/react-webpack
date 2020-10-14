@@ -6,6 +6,7 @@ import {
   getSuccessfulState,
 } from "../../store/selectors/index";
 import { Redirect } from "react-router-dom";
+import { AppState } from '../../store/typesafeConfig';
 
 import FormContainer from "./FormContainer";
 
@@ -36,7 +37,7 @@ const SignForm: React.FC<FormProps> = (props) => {
   );
 };
 
-const mapStateToProps = (state: Object) => {
+const mapStateToProps = (state: AppState): Object => {
   return {
     message: getMessageState(state),
     successful: getSuccessfulState(state),
