@@ -1,4 +1,4 @@
-import { call, put } from "redux-saga/effects";
+import { call, CallEffect, put, PutEffect, SimpleEffect } from "redux-saga/effects";
 import axios from "axios";
 import { Actions, IAuthAction } from "../../types.d";
 
@@ -42,7 +42,7 @@ async function createUser(email: string, password: string): Promise<JSON> {
   return response;
 }
 
-function* signUp(action: IAuthAction) {
+function* signUp(action: IAuthAction): Iterable<PutEffect<{ type: Actions}> | CallEffect<JSON>> {
   let message;
 
   try {
@@ -71,7 +71,7 @@ async function logUser(email: string, password: string): Promise<JSON> {
   return response;
 }
 
-function* login(action: IAuthAction) {
+function* login(action: IAuthAction): Iterable<PutEffect<{ type: Actions}> | CallEffect<JSON>> {
   let message;
 
   try {

@@ -16,8 +16,6 @@ const App = () => {
   const dispatch = useDispatch();
 
   let token = sessionStorage.getItem("token");
-  console.log(token);
-
   if (token) {
     dispatch(actions.setAccount());
   }

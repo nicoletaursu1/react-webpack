@@ -1,4 +1,4 @@
-import { call, put } from "redux-saga/effects";
+import { call, put, CallEffect, PutEffect } from "redux-saga/effects";
 import axios from "axios";
 import { Actions, IAccountAction, IUserData } from "../../types.d";
 
@@ -23,7 +23,7 @@ async function getAccountInfo(): Promise<JSON> {
 }
 
 // when user decides to change the data:
-function* updateAccount(action: IAccountAction) {
+function* updateAccount(action: IAccountAction): Iterable<PutEffect<{ type: Actions}> | CallEffect<JSON>> {
   let message;
 
   try {
@@ -39,7 +39,7 @@ function* updateAccount(action: IAccountAction) {
 }
 
 // when user logs in or signs up:
-function* setAccount() {
+function* setAccount(): Iterable<PutEffect<{ type: Actions}> | CallEffect<JSON>> {
   try {
     const accData = yield call(getAccountInfo);
 
