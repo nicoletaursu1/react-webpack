@@ -1,5 +1,6 @@
 import { signUp, login } from './auth';
-import { updateAccount } from './account';
+import { updateAccount, setAccount } from './account';
 
-const actions = { signUp, login, updateAccount }
+const actions = { signUp, login, updateAccount, setAccount }
+
 export default actions;

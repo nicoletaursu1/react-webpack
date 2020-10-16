@@ -14,13 +14,14 @@ const initialState: IAccountState = {
 
 const accountReducer = (state = initialState, action?: IAccountAction, message?: string) => {
   console.log('state: ', state);
-  
+
   switch(action.type) {
     case Actions.UPDATE_SUCCESS: {
       const account = action.payload;
       
       return {
         ...state,
+        id: account.id,
         email: account.email,
         firstName: account.firstName,
         lastName: account.lastName,

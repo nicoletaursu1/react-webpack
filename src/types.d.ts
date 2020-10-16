@@ -25,7 +25,7 @@ export interface IUserState {
 
 export interface IAccountAction {
   type: string;
-  payload: {
+  payload?: {
     id: string;
     email: string;
     firstName: string;

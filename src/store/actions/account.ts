@@ -13,3 +13,10 @@ export const updateAccount = (payload: IUserData): IAccountAction => {
   }
 }
 
+export const setAccount = (): IAccountAction => {
+  return {
+    type: Actions.SET_ACCOUNT
+  }
+}
+
+

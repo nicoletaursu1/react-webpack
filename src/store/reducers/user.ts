@@ -1,5 +1,4 @@
 import { Actions, IUserState, IUserAction } from "../../types.d";
-import accountReducer from "./account";
 
 const initialState: IUserState = {
   id: "",
@@ -10,7 +9,6 @@ const userReducer = (state = initialState, action: IUserAction) => {
   switch (action.type) {
     case Actions.UPDATE_USER: {
       const user = action.payload;
-   
       return {
         id: user.email,
         email: user.email,
