@@ -1,6 +1,7 @@
 import { call, put } from "redux-saga/effects";
 import axios from "axios";
 import { Actions, IAuthAction } from "../../types.d";
+import { getAccountInfo } from "./account";
 
 axios.defaults.baseURL = "http://localhost:3003/";
 
@@ -19,12 +20,14 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   (response) => {
-    if (response?.data?.accessToken) sessionStorage.setItem('token', response.data.accessToken);
-    else if (response?.data?.token?.accessToken) sessionStorage.setItem('token', response.data.token.accessToken);
+    if (response?.data?.accessToken)
+      sessionStorage.setItem("token", response.data.accessToken);
+    else if (response?.data?.token?.accessToken)
+      sessionStorage.setItem("token", response.data.token.accessToken);
     return response;
   },
   (error) => {
-    if( error.response.status === 401) {
+    if (error.response.status === 401) {
       return Promise.reject(error);
     }
   }
@@ -35,7 +38,7 @@ async function createUser(email: string, password: string): Promise<JSON> {
     method: "POST",
     data: { email, password },
     url: "/user/create",
-  }).then(res => res.data);
+  }).then((res) => res.data);
 
   return response;
 }
@@ -45,11 +48,14 @@ function* signUp(action: IAuthAction) {
 
   try {
     const { email, password } = action;
+    const accData = yield call(getAccountInfo);
 
     yield call(createUser, email, password);
 
-    message = "Signed up successfully!";
+    yield put({ type: Actions.UPDATE_ACCOUNT, accData });
+    yield put({ type: Actions.UPDATE_USER, accData });
 
+    message = "Signed up successfully!";
     yield put({ type: Actions.AUTH_SUCCESS, message });
   } catch (e) {
     message = "Something went wrong";
@@ -70,14 +76,17 @@ async function logUser(email: string, password: string): Promise<JSON> {
 
 function* login(action: IAuthAction) {
   let message;
-  
+
   try {
     const { email, password } = action;
+    const accData = yield call(getAccountInfo);
 
     yield call(logUser, email, password);
 
-    message = "Logged in successfully!";
+    yield put({ type: Actions.UPDATE_ACCOUNT, accData });
+    yield put({ type: Actions.UPDATE_USER, accData });
 
+    message = "Logged in successfully!";
     yield put({ type: Actions.AUTH_SUCCESS, message });
   } catch (e) {
     const message = "Something went wrong";
@@ -85,4 +94,5 @@ function* login(action: IAuthAction) {
     yield put({ type: Actions.AUTH_FAILURE, message });
   }
 }
-export { signUp, login }
+
+export { signUp, login };

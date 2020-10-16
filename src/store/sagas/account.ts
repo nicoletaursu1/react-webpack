@@ -38,13 +38,5 @@ function* updateAccount(action: IAccountAction) {
   }
 }
 
-function* getAccount() {
-  try {
-    const payload = yield call(getAccountInfo);
-    yield put({ type: Actions.GET_ACCOUNT, payload});
-  } catch (e) {
-    console.error(e)
-  }
-}
 
-export { updateAccount, getAccount }
+export { updateAccount, getAccountInfo }
