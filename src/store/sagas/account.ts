@@ -19,10 +19,10 @@ async function getAccountInfo(): Promise<JSON> {
     method: "GET",
     url: "/account",
   }).then((res) => res.data);
-
   return response;
 }
 
+// when user decides to change the data:
 function* updateAccount(action: IAccountAction) {
   let message;
 
@@ -38,5 +38,16 @@ function* updateAccount(action: IAccountAction) {
   }
 }
 
+// when user logs in or signs up:
+function* setAccount() {
+  try {
+    const accData = yield call(getAccountInfo);
 
-export { updateAccount, getAccountInfo }
+    yield put({type: Actions.UPDATE_SUCCESS, payload: accData});
+    yield put({type: Actions.UPDATE_USER, payload: accData})
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+export { updateAccount, setAccount }

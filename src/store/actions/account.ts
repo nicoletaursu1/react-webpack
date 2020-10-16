@@ -12,3 +12,4 @@ export const updateAccount = (payload: IUserData): IAccountAction => {
     }
   }
 }
+

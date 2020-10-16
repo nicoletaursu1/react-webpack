@@ -1,12 +1,14 @@
 import { takeLatest } from 'redux-saga/effects';
+
+import { Actions } from '../../types.d';
 import { signUp, login } from './auth';
-import { getAccountInfo, updateAccount } from './account';
+import { setAccount, updateAccount } from './account';
 
 function* Saga() {
-  yield takeLatest("SIGNUP", signUp);
-  yield takeLatest("LOGIN", login);
-  yield takeLatest("UPDATE_ACCOUNT", updateAccount);
-  yield takeLatest("GET_ACCOUNT", getAccountInfo);
+  yield takeLatest(Actions.SIGNUP, signUp);
+  yield takeLatest(Actions.LOGIN, login);
+  yield takeLatest(Actions.SET_ACCOUNT, setAccount);
+  yield takeLatest(Actions.SET_USER, setAccount);
 }
 
 export default Saga;

@@ -1,7 +1,6 @@
 import { call, put } from "redux-saga/effects";
 import axios from "axios";
 import { Actions, IAuthAction } from "../../types.d";
-import { getAccountInfo } from "./account";
 
 axios.defaults.baseURL = "http://localhost:3003/";
 
@@ -48,14 +47,13 @@ function* signUp(action: IAuthAction) {
 
   try {
     const { email, password } = action;
-    const accData = yield call(getAccountInfo);
 
     yield call(createUser, email, password);
-
-    yield put({ type: Actions.UPDATE_ACCOUNT, accData });
-    yield put({ type: Actions.UPDATE_USER, accData });
-
     message = "Signed up successfully!";
+
+    yield put({ type: Actions.SET_USER });
+    yield put({ type: Actions.SET_ACCOUNT });
+
     yield put({ type: Actions.AUTH_SUCCESS, message });
   } catch (e) {
     message = "Something went wrong";
@@ -70,7 +68,6 @@ async function logUser(email: string, password: string): Promise<JSON> {
     data: { email, password },
     url: "/user/login",
   }).then((res) => res.data);
-
   return response;
 }
 
@@ -79,17 +76,15 @@ function* login(action: IAuthAction) {
 
   try {
     const { email, password } = action;
-    const accData = yield call(getAccountInfo);
-
     yield call(logUser, email, password);
-
-    yield put({ type: Actions.UPDATE_ACCOUNT, accData });
-    yield put({ type: Actions.UPDATE_USER, accData });
-
     message = "Logged in successfully!";
+
+    yield put({ type: Actions.SET_USER });
+    yield put({ type: Actions.SET_ACCOUNT });
+
     yield put({ type: Actions.AUTH_SUCCESS, message });
   } catch (e) {
-    const message = "Something went wrong";
+    message = "Something went wrong";
 
     yield put({ type: Actions.AUTH_FAILURE, message });
   }

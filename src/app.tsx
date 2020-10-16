@@ -7,7 +7,7 @@ import "../public/sass/styles.scss";
 import HomePage from "./pages/HomePage";
 import SignupPage from "./pages/SignupPage";
 import SigninPage from "./pages/SigninPage";
-import AccountPage from "./pages/AccountPage";
+
 import store from './store';
 
 const App = () => {
@@ -18,7 +18,7 @@ const App = () => {
           <Route path="/" component={HomePage} exact />
           <Route path="/signup" component={SignupPage} exact />
           <Route path="/login" component={SigninPage} exact />
-          <Route path="/account" component={AccountPage} exact />
+          
         </Switch>
       </Router>
     </Provider>

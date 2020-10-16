@@ -10,9 +10,8 @@ const userReducer = (state = initialState, action: IUserAction) => {
   switch (action.type) {
     case Actions.UPDATE_USER: {
       const user = action.payload;
-
+   
       return {
-        ...state,
         id: user.email,
         email: user.email,
       };

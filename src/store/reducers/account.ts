@@ -10,36 +10,21 @@ const initialState: IAccountState = {
   message: '',
 }
 
-const accountReducer = (state = initialState, action?: IAccountAction, message?: string) => {
-  switch(action.type) {
-    case Actions.UPDATE_ACCOUNT: {
-      const account = action.payload;
 
+
+const accountReducer = (state = initialState, action?: IAccountAction, message?: string) => {
+  console.log('state: ', state);
+  
+  switch(action.type) {
+    case Actions.UPDATE_SUCCESS: {
+      const account = action.payload;
+      
       return {
         ...state,
         email: account.email,
         firstName: account.firstName,
         lastName: account.lastName,
-        phoneNumber: account.phoneNumber
-      }
-    }
-
-    case Actions.GET_ACCOUNT: {
-      const account = action.payload;
-
-      return {
-        ...state,
-        id: account.id,
-        email: account.email,
-        firstName: account.firstName,
-        lastName: account.firstName,
-        phoneNumber: account.firstName
-      };
-    }
-
-    case Actions.UPDATE_SUCCESS: {
-      return {
-        ...state,
+        phoneNumber: account.phoneNumber,
         successful: true,
         message: message
       }
