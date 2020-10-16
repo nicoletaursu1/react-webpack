@@ -1,6 +1,6 @@
-import { call, put, takeLatest } from "redux-saga/effects";
+import { call, put } from "redux-saga/effects";
 import axios from "axios";
-import { Actions, IAuth } from "../../types.d";
+import { Actions, IAuthAction } from "../../types.d";
 
 axios.defaults.baseURL = "http://localhost:3003/";
 
@@ -35,12 +35,12 @@ async function createUser(email: string, password: string): Promise<JSON> {
     method: "POST",
     data: { email, password },
     url: "/user/create",
-  }).then((res) => res.data);
+  }).then(res => res.data);
 
   return response;
 }
 
-function* signUp(action: IAuth) {
+function* signUp(action: IAuthAction) {
   let message;
 
   try {
@@ -52,7 +52,7 @@ function* signUp(action: IAuth) {
 
     yield put({ type: Actions.AUTH_SUCCESS, message });
   } catch (e) {
-    const message = "Something went wrong";
+    message = "Something went wrong";
 
     yield put({ type: Actions.AUTH_FAILURE, message });
   }
@@ -68,7 +68,7 @@ async function logUser(email: string, password: string): Promise<JSON> {
   return response;
 }
 
-function* login(action: IAuth) {
+function* login(action: IAuthAction) {
   let message;
   
   try {
@@ -85,4 +85,4 @@ function* login(action: IAuth) {
     yield put({ type: Actions.AUTH_FAILURE, message });
   }
 }
-export { signUp, login}
+export { signUp, login }

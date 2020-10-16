@@ -1,6 +1,6 @@
-import { Actions, IUserState, IAction } from "../../types.d";
+import { Actions, IAuthState, IAction } from "../../types.d";
 
-const initialState: IUserState = {
+const initialState: IAuthState = {
   authorized: false,
   requesting: false,
   successful: false,
