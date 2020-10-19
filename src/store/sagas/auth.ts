@@ -1,6 +1,6 @@
-import { call, put, takeLatest } from "redux-saga/effects";
+import { call, CallEffect, put, PutEffect, SimpleEffect } from "redux-saga/effects";
 import axios from "axios";
-import { Actions, IAuth } from "../../types.d";
+import { Actions, IAuthAction } from "../../types.d";
 
 axios.defaults.baseURL = "http://localhost:3003/";
 
@@ -19,12 +19,14 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   (response) => {
-    if (response?.data?.accessToken) sessionStorage.setItem('token', response.data.accessToken);
-    else if (response?.data?.token?.accessToken) sessionStorage.setItem('token', response.data.token.accessToken);
+    if (response?.data?.accessToken)
+      sessionStorage.setItem("token", response.data.accessToken);
+    else if (response?.data?.token?.accessToken)
+      sessionStorage.setItem("token", response.data.token.accessToken);
     return response;
   },
   (error) => {
-    if( error.response.status === 401) {
+    if (error.response.status === 401) {
       return Promise.reject(error);
     }
   }
@@ -40,19 +42,21 @@ async function createUser(email: string, password: string): Promise<JSON> {
   return response;
 }
 
-function* signUp(action: IAuth) {
+function* signUp(action: IAuthAction): Iterable<PutEffect<{ type: Actions}> | CallEffect<JSON>> {
   let message;
 
   try {
     const { email, password } = action;
 
     yield call(createUser, email, password);
-
     message = "Signed up successfully!";
+
+    yield put({ type: Actions.SET_USER });
+    yield put({ type: Actions.SET_ACCOUNT });
 
     yield put({ type: Actions.AUTH_SUCCESS, message });
   } catch (e) {
-    const message = "Something went wrong";
+    message = "Something went wrong";
 
     yield put({ type: Actions.AUTH_FAILURE, message });
   }
@@ -64,25 +68,26 @@ async function logUser(email: string, password: string): Promise<JSON> {
     data: { email, password },
     url: "/user/login",
   }).then((res) => res.data);
-
   return response;
 }
 
-function* login(action: IAuth) {
+function* login(action: IAuthAction): Iterable<PutEffect<{ type: Actions}> | CallEffect<JSON>> {
   let message;
-  
+
   try {
     const { email, password } = action;
-
     yield call(logUser, email, password);
-
     message = "Logged in successfully!";
+
+    yield put({ type: Actions.SET_USER });
+    yield put({ type: Actions.SET_ACCOUNT });
 
     yield put({ type: Actions.AUTH_SUCCESS, message });
   } catch (e) {
-    const message = "Something went wrong";
+    message = "Something went wrong";
 
     yield put({ type: Actions.AUTH_FAILURE, message });
   }
 }
-export { signUp, login}
+
+export { signUp, login };
