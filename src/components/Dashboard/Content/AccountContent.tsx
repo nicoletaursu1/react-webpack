@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import { connect, useDispatch } from "react-redux";
 
@@ -26,13 +26,13 @@ const AccountPage: React.FC<AccountProps> = ({ account }) => {
 
   const onSubmit = (e?: React.FormEvent): void => {
     e.preventDefault();
-    dispatch(actions.updateAccount(userData));
+    dispatch(actions.updateAccount({id:account.id, ...userData}));
     showAlert(true);
   };
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
-  };
+  }, [userData]);
 
   return (
     <Container>

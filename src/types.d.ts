@@ -37,8 +37,8 @@ export interface IUserState {
 export interface IAccountAction {
   type: string,
   payload?: {
-    id: string;
-    email: string;
+    id?: string;
+    email?: string;
     firstName: string;
     lastName: string;
     phoneNumber: string;

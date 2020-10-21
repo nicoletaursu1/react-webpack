@@ -18,15 +18,13 @@ axios.interceptors.request.use(
 );
 
 
-async function updateAccountInfo(payload: IUserData): Promise<JSON> {
+async function updateAccountInfo(payload): Promise<JSON> {
   const response = await axios({
     method: "PUT",
     data: payload,
     url: "/account"
   }).then((res) => res.data);
-
-  console.log('response: ',response); //???????
-
+  
   return response;
 }
 
@@ -42,9 +40,13 @@ async function getAccountInfo(): Promise<JSON> {
 function* updateAccount(action: IAccountAction): Iterable<PutEffect<{ type: Actions}> | CallEffect<JSON>> {
   try {
     const { payload } = action;
-    console.log(payload);
-    const data = {firstName: payload.firstName, lastName: payload.lastName, phoneNumber: payload.phoneNumber};
-    yield call(updateAccountInfo, data);
+    let number = payload.phoneNumber.replace('+', '');
+    const match = number.match(/^(\d{1,3})(\d{0,3})(\d{0,4})$/);
+
+    if (match) {
+      number = `${match[1]}${match[2] ? ' ' : ''}${match[2]}${match[3] ? '-' : ''}${match[3]}`;
+    }
+    yield call(updateAccountInfo, { ...payload, phoneNumber: number });
     yield put({ type: Actions.UPDATE_SUCCESS, payload});
   } catch (e) {
     yield put({ type: Actions.UPDATE_FAILURE});
