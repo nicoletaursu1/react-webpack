@@ -8,7 +8,6 @@ const initialState: IAuthState = {
 };
 
 const authReducer = (state = initialState, { type, message }: IAction) => {
-  console.log(state)
   switch (type) {
     case Actions.SIGNUP: {
       return { 

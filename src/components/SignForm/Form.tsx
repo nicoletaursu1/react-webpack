@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import {
   getMessageState,
   getSuccessfulState,
+  getRequestingState
 } from "../../store/selectors/index";
 import { Redirect } from "react-router-dom";
 import { AppState } from '../../store/typesafeConfig';
@@ -11,9 +12,10 @@ import { AppState } from '../../store/typesafeConfig';
 import FormContainer from "./FormContainer";
 
 interface FormProps {
-  signedUp: boolean;
-  message?: string;
-  successful?: boolean;
+  signedUp: boolean,
+  requesting?: boolean,
+  message?: string,
+  successful?: boolean
 }
 
 const SignForm: React.FC<FormProps> = (props) => {
@@ -30,6 +32,7 @@ const SignForm: React.FC<FormProps> = (props) => {
 
       <FormContainer
         signedUp={props.signedUp}
+        requesting={props.requesting}
         message={authMessage}
         successful={authSuccessful}
       />
@@ -41,6 +44,7 @@ const mapStateToProps = (state: AppState): Object => {
   return {
     message: getMessageState(state),
     successful: getSuccessfulState(state),
+    requesting: getRequestingState(state)
   };
 };
 

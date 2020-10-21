@@ -12,17 +12,18 @@ import Alert from "../Alert";
 import OptionText from "./OptionText";
 
 interface FormProps {
-  signedUp: boolean;
-  message?: string;
-  successful?: boolean;
+  signedUp: boolean,
+  requesting?: boolean,
+  message?: string,
+  successful?: boolean
 }
 
 const FormContainer: React.FC<FormProps> = ({
   signedUp,
+  requesting,
   message,
   successful,
 }) => {
-
   const dispatch = useDispatch();
   const [userInfo, setUserInfo] = useState<IUserData>({
     email: "",
@@ -36,9 +37,7 @@ const FormContainer: React.FC<FormProps> = ({
   };
 
   const onButtonClick = (): void => {
-    if (!successful) {
-      showAlert(true);
-    }
+    showAlert(true);
   };
 
   const resetForm = (): void => {
@@ -83,13 +82,14 @@ const FormContainer: React.FC<FormProps> = ({
         />
       )}
       {alert &&
-        (successful ? (
+        ( requesting ? (
+          null
+        ) :
+          successful ? (
           <Alert msgType="success" message="Authorized successfully!" />
         ) : (
           <Alert msgType="fail" message="Please check the credentials again." />
-        )
-        )
-      }
+        ))}
 
       {!signedUp && <OptionText />}
 
