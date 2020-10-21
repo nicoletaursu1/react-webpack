@@ -18,13 +18,13 @@ axios.interceptors.request.use(
 );
 
 
-async function updateAccountInfo(payload): Promise<JSON> {
+async function updateAccountInfo(payload: IUserData): Promise<JSON> {
   const response = await axios({
     method: "PUT",
     data: payload,
     url: "/account"
   }).then((res) => res.data);
-  
+
   return response;
 }
 
