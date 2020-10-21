@@ -4,12 +4,28 @@ import { Actions, IAccountAction, IUserData } from "../../types.d";
 
 axios.defaults.baseURL = "http://localhost:3003/";
 
+axios.interceptors.request.use(
+  (config) => {
+    const token = sessionStorage.getItem("token");
+    if (token) {
+      config.headers["Authorization"] = "Bearer " + token;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+
 async function updateAccountInfo(payload: IUserData): Promise<JSON> {
   const response = await axios({
     method: "PUT",
     data: payload,
-    url: "/account",
+    url: "/account"
   }).then((res) => res.data);
+
+  console.log('response: ',response); //???????
 
   return response;
 }
@@ -24,17 +40,14 @@ async function getAccountInfo(): Promise<JSON> {
 
 // when user decides to change the data:
 function* updateAccount(action: IAccountAction): Iterable<PutEffect<{ type: Actions}> | CallEffect<JSON>> {
-  let message;
-
   try {
     const { payload } = action;
-
-    yield call(updateAccountInfo, payload);
-    message = "Updated successfully!";
-    yield put({ type: Actions.UPDATE_SUCCESS, message });
+    console.log(payload);
+    const data = {firstName: payload.firstName, lastName: payload.lastName, phoneNumber: payload.phoneNumber};
+    yield call(updateAccountInfo, data);
+    yield put({ type: Actions.UPDATE_SUCCESS, payload});
   } catch (e) {
-    message = "Something went wrong";
-    yield put({ type: Actions.UPDATE_FAILURE, message });
+    yield put({ type: Actions.UPDATE_FAILURE});
   }
 }
 
@@ -43,8 +56,9 @@ function* setAccount(): Iterable<PutEffect<{ type: Actions}> | CallEffect<JSON>>
   try {
     const accData = yield call(getAccountInfo);
 
+    yield put({type: Actions.AUTH_SUCCESS, payload: accData});
     yield put({type: Actions.UPDATE_SUCCESS, payload: accData});
-    yield put({type: Actions.UPDATE_USER, payload: accData})
+    yield put({type: Actions.UPDATE_USER, payload: accData});
   } catch (e) {
     console.error(e)
   }

@@ -1,14 +1,25 @@
 export enum Actions {
   SIGNUP = "SIGNUP",
   LOGIN = "LOGIN",
+  LOGOUT = "LOGOUT",
   AUTH_SUCCESS = "AUTH_SUCCES",
   AUTH_FAILURE = "AUTH_FAILURE",
+  GET_ACCOUNT = "GET_ACCOUNT",
   UPDATE_ACCOUNT = "UPDATE_ACCOUNT",
   SET_ACCOUNT = "SET_ACCOUNT",
   UPDATE_SUCCESS = "UPDATE_SUCCESS",
   UPDATE_FAILURE = "UPDATE_FAILURE",
   UPDATE_USER = "UPDATE_USER",
-  SET_USER = "SET_USER"
+  SET_USER = "SET_USER",
+  TOGGLE_SIDEBAR = "TOGGLE_SIDEBAR"
+}
+
+export interface ISidebarAction {
+  type: string
+}
+
+export interface ISidebarState {
+  isOpen: boolean
 }
 
 export interface IUserAction {
@@ -24,14 +35,14 @@ export interface IUserState {
 }
 
 export interface IAccountAction {
-  type: string;
+  type: string,
   payload?: {
     id: string;
     email: string;
     firstName: string;
     lastName: string;
     phoneNumber: string;
-  };
+  }
 }
 
 export interface IAccountState {
@@ -52,7 +63,7 @@ export interface IAuthAction {
 
 export interface IUserData {
   id?: string;
-  email: string;
+  email?: string;
   password?: string;
   confirmPassword?: string;
   firstName?: string;

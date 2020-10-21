@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
 import actions from "../../store/actions";
 import { IUserData } from "../../types";
 import colors from "../../constants/colors";
-import SignButton from "./Button";
-import SignInput from "./Input";
+import SignButton from "../Button";
+import SignInput from "../Input";
 import Alert from "../Alert";
+import OptionText from "./OptionText";
 
 interface FormProps {
   signedUp: boolean;
@@ -20,8 +22,8 @@ const FormContainer: React.FC<FormProps> = ({
   message,
   successful,
 }) => {
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
   const [userInfo, setUserInfo] = useState<IUserData>({
     email: "",
     password: "",
@@ -50,7 +52,6 @@ const FormContainer: React.FC<FormProps> = ({
     } else {
       dispatch(actions.login(userInfo.email, userInfo.password));
     }
-
     resetForm();
   };
 
@@ -82,13 +83,15 @@ const FormContainer: React.FC<FormProps> = ({
         />
       )}
       {alert &&
-        (message === "" ? (
-          <Alert msgType="fail" message="Please provide matching passwords" />
-        ) : message.includes("wrong") ? (
-          <Alert msgType="fail" message={message} />
+        (successful ? (
+          <Alert msgType="success" message="Authorized successfully!" />
         ) : (
-          <Alert msgType="success" message={message} />
-        ))}
+          <Alert msgType="fail" message="Please check the credentials again." />
+        )
+        )
+      }
+
+      {!signedUp && <OptionText />}
 
       {(userInfo.password === userInfo.confirmPassword &&
         !(userInfo.confirmPassword === "")) ||

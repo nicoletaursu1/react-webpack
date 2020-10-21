@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import colors from '../../constants/colors';
+import colors from '../constants/colors';
 
 interface ButtonProps {
   title: string,
@@ -23,6 +23,11 @@ const Button = styled.button`
   border-radius: 20px;
   margin: 15px 0;
   ${props => props.disabled && `background-color: gray;`}
+  &:hover {
+    cursor: pointer;
+    opacity: 0.8;
+    transition: 1s;
+  }
 `;
 
 

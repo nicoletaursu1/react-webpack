@@ -1,6 +1,7 @@
-import { signUp, login } from './auth';
+import { signUp, login, logout } from './auth';
 import { updateAccount, setAccount } from './account';
+import { toggleSidebar } from './sidebar';
 
-const actions = { signUp, login, updateAccount, setAccount }
+const actions = { signUp, login, logout, updateAccount, setAccount, toggleSidebar }
 
 export default actions;

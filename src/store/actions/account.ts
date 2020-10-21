@@ -8,7 +8,7 @@ export const updateAccount = (payload: IUserData): IAccountAction => {
       email: payload.email,
       firstName: payload.firstName,
       lastName: payload.lastName,
-      phoneNumber: payload.phoneNumber
+      phoneNumber: payload.phoneNumber,
     }
   }
 }
@@ -18,5 +18,6 @@ export const setAccount = (): IAccountAction => {
     type: Actions.SET_ACCOUNT
   }
 }
+
 
 

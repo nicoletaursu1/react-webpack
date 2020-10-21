@@ -61,7 +61,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: "C Pay",
+      title: "C-Pay",
       template: path.resolve(__dirname, 'public/index.html'),
     })
   ],

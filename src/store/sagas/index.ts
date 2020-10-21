@@ -7,6 +7,7 @@ import { setAccount, updateAccount } from './account';
 function* Saga() {
   yield takeLatest(Actions.SIGNUP, signUp);
   yield takeLatest(Actions.LOGIN, login);
+  yield takeLatest(Actions.UPDATE_ACCOUNT, updateAccount);
   yield takeLatest(Actions.SET_ACCOUNT, setAccount);
   yield takeLatest(Actions.SET_USER, setAccount);
 }

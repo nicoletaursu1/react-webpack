@@ -1,24 +1,24 @@
-import { Actions, IAccountState, IAccountAction } from '../../types.d';
+import { Actions, IAccountState, IAccountAction } from "../../types.d";
 
 const initialState: IAccountState = {
-  id: '',
-  email: '',
-  firstName: '',
-  lastName: '',
-  phoneNumber: '',
+  id: "",
+  email: "",
+  firstName: "",
+  lastName: "",
+  phoneNumber: "",
   successful: false,
-  message: '',
-}
+  message: "",
+};
 
+const accountReducer = (state = initialState, action?: IAccountAction) => {
+  switch (action.type) {
+    case Actions.GET_ACCOUNT: {
+      return state;
+    }
 
-
-const accountReducer = (state = initialState, action?: IAccountAction, message?: string) => {
-  console.log('state: ', state);
-
-  switch(action.type) {
     case Actions.UPDATE_SUCCESS: {
       const account = action.payload;
-      
+
       return {
         ...state,
         id: account.id,
@@ -27,20 +27,32 @@ const accountReducer = (state = initialState, action?: IAccountAction, message?:
         lastName: account.lastName,
         phoneNumber: account.phoneNumber,
         successful: true,
-        message: message
-      }
+        message: "Updated successfully!",
+      };
     }
 
     case Actions.UPDATE_FAILURE: {
       return {
         ...state,
         successful: false,
-        message: message
-      }
+        message: "Something went wrong",
+      };
     }
 
-    default: return state;
+    case Actions.LOGOUT: {
+      return {
+        id: "",
+        email: "",
+        firstName: "",
+        lastName: "",
+        phoneNumber: "",
+        successful: false,
+        message: "",
+      };
+    }
+    default:
+      return state;
   }
-}
+};
 
 export default accountReducer;

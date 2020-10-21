@@ -25,7 +25,7 @@ const SignForm: React.FC<FormProps> = (props) => {
       {authSuccessful && !props.signedUp ? (
         <Redirect to="/login" />
       ) : (
-        authSuccessful && props.signedUp && <Redirect to="/account" />
+        authSuccessful && props.signedUp && <Redirect to="/dashboard" />
       )}
 
       <FormContainer

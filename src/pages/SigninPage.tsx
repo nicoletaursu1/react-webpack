@@ -1,13 +1,19 @@
 import React, { useState } from "react";
+import styled from 'styled-components';
 
 import SignForm from '../components/SignForm/Form';
 
 const SigninPage = () => {
   return (
-    <div>
+    <Container>
       <SignForm signedUp={true} />
-    </div>
+    </Container>
   )
 }
 
+const Container = styled.div`
+  display: flex;
+  height: 100vh;
+  align-self: center;
+`
 export default SigninPage;
